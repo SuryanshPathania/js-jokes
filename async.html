@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="main"></div>
+    <button onclick="generatejokes()">Generate New Jokes</button>
+    
+    <script>
+        // Automatically generate jokes on page load
+        generatejokes();
+
+        // Async function to fetch and display jokes
+        async function generatejokes() {
+            try {
+                // Fetch joke from API
+                let data = await fetch("http://www.official-joke-api.appspot.com/random_joke");
+                // Convert the response to JSON
+                let jsdata = await data.json();
+
+                // Log the joke object to the console
+                console.log(jsdata);
+
+                // Update the content of the 'main' div with the joke
+                document.getElementById("main").innerHTML = `
+                    <h3>Setup: ${jsdata.setup}</h3>
+                    <h2>Punchline: ${jsdata.punchline}</h2>
+                `;
+            } catch (error) {
+                // Handle errors (e.g., network issues)
+                console.error("Error fetching joke:", error);
+                document.getElementById("main").innerHTML = `
+                    <p style="color: red;">Failed to load a joke. Please try again later.</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
